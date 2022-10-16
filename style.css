@@ -286,20 +286,7 @@ footer .footer-icons{
     align-items:center;
     justify-content: space-around;
 }
-.footer-icons ul{
-    list-style-type: none;
-    display:flex;
-}
-.footer-icons li{
-    padding:10px;
-    margin:0px 20px;
-}
-.footer-icons li:hover{
-    background:rgb(17, 206, 206);
-}
-.footer-icons img{
-    width:30px;
-}
+
 
 /* About */
 #about{
@@ -461,3 +448,60 @@ header ul a{
 
 }
 
+.order-style{
+    border-radius: 4px;
+    box-shadow: 0.2px 0.5px 8px -4px blue;
+    list-style-type: none;
+    margin:30px 20px;
+    padding:10px 2rem ;
+}
+
+.order-style ul{
+    list-style: none;
+    text-align: center;  
+}
+
+.order-style img{
+    width:5rem
+}
+
+
+footer{
+    display:flex;
+    margin-top:40px;
+    padding:20px;
+    background: #262626;
+}
+footer .footer-title{
+    text-align: center;
+    color:white;
+    width:50%;
+    font-size:50px;
+    font-weight:bold;
+    margin:0 auto;
+}
+footer .footer-icons{
+    width:50%;
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+}
+.footer-icons ul{
+    list-style-type: none;
+    display:flex;
+}
+.footer-icons li{
+    padding:2px;
+    
+    
+}
+
+.footer-icons i{
+    width:40px;
+    text-align: center;
+} 
+.footer-icons i:hover{
+    transform:scale(1.4);
+    transition: transform .2s ease-in-out;
+    
+} 

@@ -156,10 +156,13 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.getOrder = (req, res, next) => {
-  res.render("shop/orders", {
-    path: "/orders",
-    pageTitle: "Your Orders",
-  });
+  req.user.getOrders({include : ['products']})
+  .then(orders=>{
+    res.status(200).json(orders)
+  })
+  .catch(err=>{
+    res.status(400).json('unable to fetch orders')
+  })
 };
 
 exports.postOrder = (req, res, next) => {
