@@ -10,6 +10,8 @@ const User = require('./models/user');
 const Product = require('./models/product');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cartItem');
+const Order = require('./models/orders');
+const OrderItem = require('./models/OrderItems');
 
 const app = express();
 app.use(cors());
@@ -39,10 +41,17 @@ app.use(errorController.get404);
 
 Product.belongsTo(User , {constraints:true , onDelete:'CASCADE'});
 User.hasMany(Product);
+
 User.hasOne(Cart);
 Cart.belongsTo(User);
 Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through:CartItem})
+
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product , {through:OrderItem})
+Product.belongsToMany(Order, {through:OrderItem})
+
 
 sequelize
 .sync()

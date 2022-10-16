@@ -13,18 +13,17 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function getProducts(page){
+    
     axios.get(`http://localhost:3000/products/?page=${page}`).then((products) => {
-        products.data.products.forEach(product => {
-            showProductsOnScreen(product);
+            showProductsOnScreen(products);
             showPagination(products.data.data);
-        })
     })
 }
 
 function showPagination({currentPage,hasNextPage,hasPreviousPage,nextPage,previousPage,lastPage}){
 
     pagination.innerHTML ='';
-
+    
     if(hasPreviousPage){
         const button1 = document.createElement('button');
         button1.innerHTML = previousPage ;
@@ -47,8 +46,13 @@ function showPagination({currentPage,hasNextPage,hasPreviousPage,nextPage,previo
 
 }
 
-function showProductsOnScreen(product){
-    const productHtml = `
+function showProductsOnScreen(products){
+
+    parentNode.innerHTML = ''
+
+    products.data.products.forEach(product => {
+
+        const productHtml = `
                 <div id="album-${product.id}">
                     <h3>${product.title}</h3>
                     <div class="image-container">
@@ -59,7 +63,10 @@ function showProductsOnScreen(product){
                         <button class="shop-item-button" type='button'>ADD TO CART</button>
                     </div>
                 </div>`
-            parentNode.innerHTML = productHtml ;
+            parentNode.innerHTML = parentNode.innerHTML + productHtml ;
+    })
+
+    
 }
 
 document.addEventListener('click',(e)=>{
@@ -79,13 +86,7 @@ document.addEventListener('click',(e)=>{
 
     }
     if (e.target.className=='cart-btn-bottom' || e.target.className=='cart-bottom' || e.target.className=='cart-holder'){
-        axios.get('http://localhost:3000/cart').then(carProducts => {
-            showProductsInCart(carProducts.data);
-            document.querySelector('#cart').style = "display:block;"
-
-        }).catch(err=>{
-            console.log(err);
-        })
+        getCartItems()
     }
     if (e.target.className=='cancel'){
         document.querySelector('#cart').style = "display:none;"
@@ -93,19 +94,39 @@ document.addEventListener('click',(e)=>{
     if (e.target.className=='purchase-btn'){
         if (parseInt(document.querySelector('.cart-number').innerText) === 0){
             alert('You have Nothing in Cart , Add some products to purchase !');
-            return
+            return;
         }
-        alert('This Feature is yet to be completed ')
+        axios.post('http://localhost:3000/create-order')
+        .then(response=>{
+            getCartItems();
+            console.log(response);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+        alert('Thank you! forshopping with us')
     }
 })
 
+function getCartItems(){
+    axios.get('http://localhost:3000/cart').then(carProducts => {
+            showProductsInCart(carProducts.data);
+            document.querySelector('#cart').style = "display:block;"
+
+        }).catch(err=>{
+            console.log(err);
+        })
+}
+
 function showProductsInCart(listofproducts){
+    let total = 0 ; 
     cart_items.innerHTML = "";
     listofproducts.forEach(product => {
         const id = `album-${product.id}`;
-        const name = product.id;
+        const name = product.title;
         const img_src = product.imageUrl;
         const price = product.price;
+        total = total + +price ;
         document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
         const cart_item = document.createElement('div');
         cart_item.classList.add('cart-row');
@@ -122,6 +143,8 @@ function showProductsInCart(listofproducts){
         </form>`
         cart_items.appendChild(cart_item)
     })
+
+     document.querySelector('.total-price').innerText = total  ;
 }
 function deleteCartItem(e, prodId){
     e.preventDefault();
