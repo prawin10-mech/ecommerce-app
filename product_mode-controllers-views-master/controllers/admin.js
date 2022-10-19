@@ -45,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  req.user.getProducts()
+  req.user.getProducts({where:{id:prodId}})
   // Product.findByPk(prodId)
   .then(products => {
     let product = products[0];

@@ -35,7 +35,9 @@ exports.getProducts = (req, res, next) => {
       // });
     })
     .catch((err) => {
-      console.log(err);
+      res
+        .status(500)
+        .json({  message: "Error getting products " });
     });
 };
 
@@ -118,9 +120,11 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
+
   if (!prodId) {
     res.status(400).json({ error: true, message: "product id is missing" });
   }
+  
   let fetchedCart;
   let newQuantity = 1;
   req.user
@@ -131,7 +135,9 @@ exports.postCart = (req, res, next) => {
     })
     .then((products) => {
       let product;
-
+      // if (products.length > 0) {
+      //   product = products[0];
+      // }
       if (product) {
         let oldquantity = product.cartItem.quantity;
         newQuantity = oldquantity + 1;
@@ -187,7 +193,7 @@ exports.postOrder = (req, res, next) => {
       res.status(200).json({message:'successfully posted orders'})
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({message:'error posting orders'})
     });
 };
 
@@ -203,9 +209,9 @@ exports.postDeleteProduct = (req, res, next) => {
       return product.cartItem.destroy();
     })
     .then(() => {
-      res.redirect("/cart");
+      res.status(200).json("successfully deleted product from cart")
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json("Error deleting product")
     });
 };
