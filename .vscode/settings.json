@@ -4,5 +4,7 @@
   "azureFunctions.projectLanguage": "JavaScript",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.preDeployTask": "npm prune (functions)"
+  "azureFunctions.preDeployTask": "npm prune (functions)",
+  "appService.defaultWebAppToDeploy": "/subscriptions/a4da09ec-aa88-4a9e-87ae-3adddc32d280/AppServices/subscriptions/a4da09ec-aa88-4a9e-87ae-3adddc32d280/resourceGroups/praveenEcommerceApp_group/providers/Microsoft.Web/sites/praveenEcommerceApp",
+  "appService.deploySubpath": "."
 }
